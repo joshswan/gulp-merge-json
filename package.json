@@ -32,7 +32,7 @@
     "gulp": "^3.9.0",
     "istanbul": "*",
     "mocha": "*",
-    "should": "~2.1.0"
+    "should": "^7.1.0"
   },
   "license": "MIT"
 }
