@@ -10,7 +10,7 @@ var merge = require('deepmerge');
 var path = require('path');
 var through = require('through');
 
-var PLUGIN_NAME = 'gulp-merge';
+var PLUGIN_NAME = 'gulp-merge-json';
 
 module.exports = function(fileName, edit, startObj, endObj, exportModule) {
   if ((startObj && typeof startObj !== 'object') || (endObj && typeof endObj !== 'object')) {
