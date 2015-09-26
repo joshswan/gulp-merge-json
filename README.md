@@ -1,4 +1,4 @@
-# gulp-merge
+# gulp-merge-json
 
 A gulp plugin for deep-merging multiple JSON files into one file. Export as JSON or a node module.
 
@@ -46,4 +46,67 @@ gulp.src('jsonFiles/**/*.json')
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge('dataModule.js', false, false, false, true))
 	.pipe(gulp.dest('./dist'));
+```
+
+## Example Input
+```JSON
+/*
+	json/defaults.json
+ */
+{
+	"key1": {
+		"data1": "value1",
+		"data2": "value2"
+	},
+	"key2": {
+		"dataA": "valueA",
+		"dataB": {
+			"a": "b",
+			"c": "d"
+		}
+	}
+}
+
+/*
+	json/development.json
+ */
+{
+	"key1": {
+		"data1": "devValue"
+	},
+	"key2": {
+		"dataB": {
+			"c": "DEV MODE!"
+		}
+	},
+	"key3": {
+		"important": "value"
+	}
+}
+```
+
+## Example Output
+```JSON
+/*
+	dist/combined.json
+ */
+{
+	"key1": {
+		"data1": "devValue",
+		"data2": "value2"
+	},
+	"key2": {
+		"dataA": "valueA",
+		"dataB": {
+			"dataA": "valueA",
+			"dataB": {
+				"a": "b",
+				"c": "DEV MODE!"
+			}
+		}
+	},
+	"key3": {
+		"important": "value"
+	}
+}
 ```
