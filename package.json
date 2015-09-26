@@ -1,0 +1,31 @@
+{
+  "name": "gulp-merge",
+  "version": "0.1.0",
+  "description": "A gulp plugin to merge JSON files into one file",
+  "author": "Josh Swan <josh@sportifik.com>",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshswan/gulp-merge"
+  },
+  "bugs": {
+    "url": "https://github.com/joshswan/gulp-merge/issues"
+  },
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "json",
+    "merge"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "gulp-util": "^3.0.6",
+    "deepmerge": "^0.2.10",
+    "through": "^2.3.8"
+  },
+  "devDependencies": {    
+    "eslint": "^1.4.3",
+    "gulp": "^3.9.0"
+  },
+  "license": "MIT"
+}
