@@ -59,13 +59,17 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
       merged = merge(merged, endObj);
     }
 
-    var contents = (exportModule) ? 'module.exports = ' : '';
+    var contents = JSON.stringify(merged, null, '\t');
+
+    if (exportModule) {
+      contents = 'module.exports = ' + contents + ';';
+    }
 
     var output = new gutil.File({
       cwd: firstFile.cwd,
       base: firstFile.base,
       path: path.join(firstFile.base, fileName),
-      contents: new Buffer(contents + JSON.stringify(merged, null, '\t')),
+      contents: new Buffer(contents),
     });
 
     this.emit('data', output);
