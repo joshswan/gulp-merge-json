@@ -1,5 +1,5 @@
 # gulp-merge-json
-[![Dependency Status][depstat-image]][depstat-url][![Dev Dependency Status][devdepstat-image]][devdepstat-url]
+[![Build Status][build-image]][build-url] [![Coverage Status][coverage-image]][coverage-url] [![Dependency Status][depstat-image]][depstat-url] [![Dev Dependency Status][devdepstat-image]][devdepstat-url]
 
 A gulp plugin for deep-merging multiple JSON files into one file. Export as JSON or a node module.
 
@@ -112,6 +112,10 @@ gulp.src('jsonFiles/**/*.json')
 }
 ```
 
+[build-url]: https://travis-ci.org/joshswan/gulp-merge-json
+[build-image]: https://travis-ci.org/joshswan/gulp-merge-json.svg?branch=master
+[coverage-url]: https://coveralls.io/github/joshswan/gulp-merge-json?branch=master
+[coverage-image]: https://coveralls.io/repos/joshswan/gulp-merge-json/badge.svg?branch=master&service=github
 [depstat-url]: https://david-dm.org/joshswan/gulp-merge-json
 [depstat-image]: https://david-dm.org/joshswan/gulp-merge-json.svg
 [devdepstat-url]: https://david-dm.org/joshswan/gulp-merge-json#info=devDependencies
