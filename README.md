@@ -5,7 +5,7 @@ A gulp plugin for deep-merging multiple JSON files into one file. Export as JSON
 
 ## Usage
 ```javascript
-var merge = require('gulp-merge');
+var merge = require('gulp-merge-json');
 
 /*
 	Basic functionality
