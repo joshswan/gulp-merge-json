@@ -18,7 +18,7 @@ gulp.src('jsonFiles/**/*.json')
 	Edit JSON with function
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('combined.json', function(parsedJson, file) {
+	.pipe(merge('combined.json', function(parsedJson) {
 		if (parsedJson.someValue) {
 			delete parsedJson.otherValue;
 		}
