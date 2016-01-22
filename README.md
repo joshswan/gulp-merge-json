@@ -42,10 +42,10 @@ gulp.src('jsonFiles/**/*.json')
 	.pipe(gulp.dest('./dist'));
 
 /*
-	Use module.exports
+	Wrap in var
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('dataModule.js', false, false, false, true))
+	.pipe(merge('dataModule.js', false, false, false, 'my.var'))
 	.pipe(gulp.dest('./dist'));
 ```
 
