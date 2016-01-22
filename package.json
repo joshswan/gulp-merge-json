@@ -1,15 +1,15 @@
 {
-  "name": "gulp-merge-json-2",
-  "version": "0.1.0",
-  "description": "A gulp plugin to merge JSON files into one file with a param to pass a var. ",
-  "author": "Josh Swan <josh@sportifik.com>, modif by patrick b",
+  "name": "gulp-merge-json",
+  "version": "0.2.0",
+  "description": "A gulp plugin to merge JSON files into one file",
+  "author": "Josh Swan <josh@sportifik.com>",
   "main": "./index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LPCmedia/gulp-merge-json.git"
+    "url": "https://github.com/joshswan/gulp-merge-json"
   },
   "bugs": {
-    "url": "https://github.com/LPCmedia/gulp-merge-json/issues"
+    "url": "https://github.com/joshswan/gulp-merge-json/issues"
   },
   "keywords": [
     "gulpplugin",
@@ -27,7 +27,7 @@
     "through": "^2.3.8"
   },
   "devDependencies": {
-    "coveralls": "*", 
+    "coveralls": "*",
     "eslint": "^1.4.3",
     "gulp": "^3.9.0",
     "istanbul": "*",
