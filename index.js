@@ -61,8 +61,10 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
 
     var contents = JSON.stringify(merged, null, '\t');
 
-    if (exportModule) {
+    if (exportModule === true) {
       contents = 'module.exports = ' + contents + ';';
+    } else if (exportModule){
+      contents = exportModule + ' = ' + contents + ';';
     }
 
     var output = new gutil.File({

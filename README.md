@@ -48,6 +48,14 @@ gulp.src('jsonFiles/**/*.json')
 	.pipe(merge('dataModule.js', false, false, false, true))
 	.pipe(gulp.dest('./dist'));
 ```
+/*
+	Use a custom variable to prefix
+ */
+ 
+gulp.src('jsonFiles/**/*.json')
+	.pipe(merge('dataModule.js', false, false, false, 'var my.var'))
+	.pipe(gulp.dest('./dist'));
+```
 
 ## Example Input
 ```JSON

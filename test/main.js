@@ -117,13 +117,63 @@ it('should use supplied final object to overwrite', function(done) {
   });
 });
 
-it('should output a node module', function(done) {
+it('should output a node module when true is passed as the exportModule param', function(done) {
   var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, true));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     expected = 'module.exports = ' + expected + ';';
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should not output a node module when false is passed as the exportModule param', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, false));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should not output a node module when nothing is passed as the exportModule param', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should not output a node module when empty string is passed as the exportModule param', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, ''));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should output the passed variable when a name is passed as the exportModule param', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, 'varname'));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    expected = 'varname = ' + expected + ';';
 
     file.contents.toString().should.eql(expected);
 
