@@ -46,6 +46,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
     try {
       merged = merge(merged, editFunc(JSON.parse(file.contents.toString('utf8'))));
     } catch (err) {
+      err.message = 'Error while parsing ' + file.path + ': ' + err.message;
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
   }
