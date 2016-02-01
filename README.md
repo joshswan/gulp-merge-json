@@ -1,5 +1,5 @@
 # gulp-merge-json
-[![NPM Version][npm-image]][npm-url] [![Build Status][build-image]][build-url] [![Coverage Status][coverage-image]][coverage-url] [![Dependency Status][depstat-image]][depstat-url] [![Dev Dependency Status][devdepstat-image]][devdepstat-url]
+[![NPM Version](https://badge.fury.io/js/gulp-merge-json.svg)](https://www.npmjs.com/package/gulp-merge-json) [![Build Status](https://travis-ci.org/joshswan/gulp-merge-json.svg?branch=master)](https://travis-ci.org/joshswan/gulp-merge-json) [![Coverage Status](https://coveralls.io/repos/joshswan/gulp-merge-json/badge.svg?branch=master&service=github)](https://coveralls.io/github/joshswan/gulp-merge-json?branch=master) [![Dependency Status](https://david-dm.org/joshswan/gulp-merge-json.svg)](https://david-dm.org/joshswan/gulp-merge-json) [![Dev Dependency Status](https://david-dm.org/joshswan/gulp-merge-json/dev-status.svg)](https://david-dm.org/joshswan/gulp-merge-json#info=devDependencies)
 
 A gulp plugin for deep-merging multiple JSON files into one file. Export as JSON or a node module.
 
@@ -119,14 +119,3 @@ gulp.src('jsonFiles/**/*.json')
 	}
 }
 ```
-
-[build-url]: https://travis-ci.org/joshswan/gulp-merge-json
-[build-image]: https://travis-ci.org/joshswan/gulp-merge-json.svg?branch=master
-[coverage-url]: https://coveralls.io/github/joshswan/gulp-merge-json?branch=master
-[coverage-image]: https://coveralls.io/repos/joshswan/gulp-merge-json/badge.svg?branch=master&service=github
-[depstat-url]: https://david-dm.org/joshswan/gulp-merge-json
-[depstat-image]: https://david-dm.org/joshswan/gulp-merge-json.svg
-[devdepstat-url]: https://david-dm.org/joshswan/gulp-merge-json#info=devDependencies
-[devdepstat-image]: https://david-dm.org/joshswan/gulp-merge-json/dev-status.svg
-[npm-url]: https://www.npmjs.com/package/gulp-merge-json
-[npm-image]: https://badge.fury.io/js/gulp-merge-json.svg
