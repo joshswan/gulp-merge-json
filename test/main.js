@@ -271,4 +271,84 @@ it('should error on stream', function(done) {
   stream.end();
 });
 
+it('should merge when file is passed in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({fileName: 'combined.json'}));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+
+it('should allow the editor function in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({
+    fileName: 'combined.json',
+    edit: function(json) {
+      if (json.place) {
+        json.place = 'New York';
+      }
+
+      return json;
+    }
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "New York",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should use supplied start object as base when passed in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({
+    fileName: 'combined.json',
+    startObj: {'initial': 'value'}
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should use supplied final object to overwrite when passed in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({
+    fileName: 'combined.json',
+    endObj: {'place': 'Las Vegas'}
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should output a node module when exportModule is true in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({
+    fileName: 'combined.json',
+    exportModule: true
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    expected = 'module.exports = ' + expected + ';';
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
 

@@ -54,7 +54,37 @@ gulp.src('jsonFiles/**/*.json')
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge('dataModule.js', false, false, false, 'var my.var'))
 	.pipe(gulp.dest('./dist'));
+
+
+/*
+   Provide options as an object
+*/
+gulp.src('jsonFiles/**/*.json')
+    .pipe(merge({
+        fileName: 'dataModule.js',
+        edit: function(parsedJson) {
+            if (parsedJson.someValue) {
+                delete parsedJson.otherValue;
+            }
+        },
+        startObj: {someKey: 'defaultValue'},
+        endObj: {someKey: 'specialValue'},
+        exportModule: false,
+    })
+    .pipe(gulp.dest('./dist'));
+
+/*
+  Provide replacer and space options for JSON.stringify
+*/
+gulp.src('jsonFiles/**/*.json')
+    .pipe(merge({
+        fileName: 'dataModule.js',
+        jsonSpace = '  ',
+        jsonReplacer = function() {/*...*/}
+    })
+    .pipe(gulp.dest('./dist'));
 ```
+
 
 ## Example Input
 ```JSON
