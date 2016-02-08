@@ -31,6 +31,8 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
   var firstFile = null;
 
   function parseAndMerge(file) {
+    var parsed;
+
     if (file.isNull()) {
       return this.queue(file);
     }
@@ -44,7 +46,14 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
     }
 
     try {
-      merged = merge(merged, editFunc(JSON.parse(file.contents.toString('utf8'))));
+      parsed = JSON.parse(file.contents.toString('utf8'));
+    } catch(err) {
+      err.message = 'Error while parsing ' + file.path + ': ' + err.message;
+      return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
+    }
+
+    try {
+      merged = merge(merged, editFunc(parsed));
     } catch (err) {
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
