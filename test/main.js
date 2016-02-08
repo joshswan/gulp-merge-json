@@ -352,3 +352,38 @@ it('should output a node module when exportModule is true in options object', fu
   });
 });
 
+it('should use jsonReplacer when stringifying if passed in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({
+    fileName: 'combined.json',
+    jsonReplacer: function(key, value) {
+      if (key === 'pet') {
+        return undefined;
+      }
+
+      return value;
+    }
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\t"name": "Josh",', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should use jsonSpace when stringifying if passed in options object', function(done) {
+  var stream = gulp.src('test/json/*.json').pipe(merge({
+    fileName: 'combined.json',
+    jsonSpace: '  ',
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '  "name": "Josh",', '  "pet": {', '    "name": "Indy"', '  },', '  "place": "San Francisco",', '  "settings": {', '    "likesSleep": true', '  }', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});

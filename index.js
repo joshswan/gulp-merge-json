@@ -13,8 +13,9 @@ var through = require('through');
 var PLUGIN_NAME = 'gulp-merge-json';
 
 module.exports = function(fileName, edit, startObj, endObj, exportModule) {
+  var jsonReplacer = null;
+  var jsonSpace = '\t';
 
-  var jsonReplacer, jsonSpace;
   if (typeof fileName === 'object') {
     // use first argument as opts
     var opts = fileName;
@@ -25,9 +26,6 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
     exportModule = opts.exportModule;
     jsonReplacer = opts.jsonReplacer || null;
     jsonSpace = opts.jsonSpace || '\t';
-  } else {
-    jsonReplacer = null;
-    jsonSpace = '\t';
   }
 
   if ((startObj && typeof startObj !== 'object') || (endObj && typeof endObj !== 'object')) {
