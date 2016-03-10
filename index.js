@@ -5,14 +5,20 @@
  */
 'use strict';
 
+var _ = require('lodash');
 var gutil = require('gulp-util');
-var merge = require('deepmerge');
 var path = require('path');
 var through = require('through');
 
 var PLUGIN_NAME = 'gulp-merge-json';
 
-module.exports = function(fileName, edit, startObj, endObj, exportModule) {
+function merge(a, b, concatArrays) {
+  return _.mergeWith(a, b, function(a, b) {
+    return Array.isArray(a) && concatArrays ? a.concat(b) : undefined;
+  });
+}
+
+module.exports = function(fileName, edit, startObj, endObj, exportModule, concatArrays) {
   var jsonReplacer = null;
   var jsonSpace = '\t';
 
@@ -26,6 +32,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
     exportModule = opts.exportModule;
     jsonReplacer = opts.jsonReplacer || null;
     jsonSpace = opts.jsonSpace || '\t';
+    concatArrays = opts.concatArrays;
   }
 
   if ((startObj && typeof startObj !== 'object') || (endObj && typeof endObj !== 'object')) {
@@ -37,7 +44,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
   if (typeof edit === 'function') {
     editFunc = edit;
   } else if (typeof edit === 'object') {
-    editFunc = function(json) { return merge(json, edit); };
+    editFunc = function(json) { return merge(json, edit, concatArrays); };
   } else {
     editFunc = function(json) { return json; };
   }
@@ -68,7 +75,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
     }
 
     try {
-      merged = merge(merged, editFunc(parsed));
+      merged = merge(merged, editFunc(parsed), concatArrays);
     } catch (err) {
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
@@ -80,7 +87,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule) {
     }
 
     if (endObj) {
-      merged = merge(merged, endObj);
+      merged = merge(merged, endObj, concatArrays);
     }
 
     var contents = JSON.stringify(merged, jsonReplacer, jsonSpace);
