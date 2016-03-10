@@ -2,5 +2,6 @@
 	"name": "Josh",
 	"pet": {
 		"name": "Indy"
-	}
+	},
+	"tags": ["cool"]
 }

@@ -2,5 +2,6 @@
 	"place": "San Francisco",
 	"settings": {
 		"likesSleep": true
-	}
+	},
+	"tags": ["awesome"]
 }
