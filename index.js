@@ -75,7 +75,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule, concat
     }
 
     try {
-      merged = merge(merged, editFunc(parsed), concatArrays);
+      merged = merge(merged, editFunc(parsed, fileName), concatArrays);
     } catch (err) {
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
