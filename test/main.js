@@ -9,11 +9,11 @@ var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var merge = require('../');
+var should = require('should');
 
 var PLUGIN_NAME = 'gulp-merge-json';
 
 require('mocha');
-require('should');
 
 it('should combine JSON files', function(done) {
   var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json'));
@@ -82,7 +82,7 @@ it('should delete property based on input function', function(done) {
 });
 
 it('should merge object if given as input function', function(done) {
-  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', {"testing": true}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', {testing: true}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"testing": true,', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -94,7 +94,7 @@ it('should merge object if given as input function', function(done) {
 });
 
 it('should use supplied start object as base', function(done) {
-  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, {"initial": "value"}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, {initial: 'value'}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -106,7 +106,7 @@ it('should use supplied start object as base', function(done) {
 });
 
 it('should use supplied final object to overwrite', function(done) {
-  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, {"place": "Las Vegas"}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, {place: 'Las Vegas'}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -207,7 +207,7 @@ it('should do nothing with no files', function(done) {
 
 it('should error on invalid start object', function(done) {
   try {
-    var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, 10));
+    gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, 10));
 
     should.fail(null, null, 'Should have failed!');
   } catch (err) {
@@ -219,7 +219,7 @@ it('should error on invalid start object', function(done) {
 
 it('should error on invalid end object', function(done) {
   try {
-    var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, 10));
+    gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, 10));
 
     should.fail(null, null, 'Should have failed!');
   } catch (err) {
@@ -230,7 +230,7 @@ it('should error on invalid end object', function(done) {
 });
 
 it('should error in editor function', function(done) {
-  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', function(json) {
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', function() {
     throw new Error('Oh no!');
   }));
 
@@ -240,7 +240,7 @@ it('should error in editor function', function(done) {
     done();
   });
 
-  stream.on('data', function(newFile) {
+  stream.on('data', function() {
     should.fail(null, null, 'Should have failed!');
   });
 });
@@ -255,7 +255,7 @@ it('should error on invalid JSON', function(done) {
     done();
   });
 
-  stream.on('data', function(newFile) {
+  stream.on('data', function() {
     should.fail(null, null, 'Should have failed!');
   });
 });
@@ -265,7 +265,7 @@ it('should error on stream', function(done) {
     path: 'test/invalid/stream.txt',
     cwd: 'test/',
     base: 'test/invalid',
-    contents: fs.createReadStream('test/invalid/stream.txt')
+    contents: fs.createReadStream('test/invalid/stream.txt'),
   });
 
   var stream = merge('stream.json');
@@ -276,7 +276,7 @@ it('should error on stream', function(done) {
     done();
   });
 
-  stream.on('data', function (newFile) {
+  stream.on('data', function() {
     should.fail(null, null, 'Should have failed!');
   });
 
@@ -306,7 +306,7 @@ it('should allow the editor function in options object', function(done) {
       }
 
       return json;
-    }
+    },
   }));
 
   stream.on('data', function(file) {
@@ -321,7 +321,7 @@ it('should allow the editor function in options object', function(done) {
 it('should use supplied start object as base when passed in options object', function(done) {
   var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
-    startObj: {'initial': 'value'}
+    startObj: {'initial': 'value'},
   }));
 
   stream.on('data', function(file) {
@@ -336,7 +336,7 @@ it('should use supplied start object as base when passed in options object', fun
 it('should use supplied final object to overwrite when passed in options object', function(done) {
   var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
-    endObj: {'place': 'Las Vegas'}
+    endObj: {'place': 'Las Vegas'},
   }));
 
   stream.on('data', function(file) {
@@ -351,7 +351,7 @@ it('should use supplied final object to overwrite when passed in options object'
 it('should output a node module when exportModule is true in options object', function(done) {
   var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
-    exportModule: true
+    exportModule: true,
   }));
 
   stream.on('data', function(file) {
@@ -374,7 +374,7 @@ it('should use jsonReplacer when stringifying if passed in options object', func
       }
 
       return value;
-    }
+    },
   }));
 
   stream.on('data', function(file) {
@@ -465,7 +465,7 @@ it('should use jsonReplacer with JSON5 when stringifying if passed in options ob
       }
 
       return value;
-    }
+    },
   }));
 
   stream.on('data', function(file) {
