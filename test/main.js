@@ -415,3 +415,15 @@ it('should concat arrays if enabled in options object', function(done) {
     done();
   });
 });
+
+it('should merge JSON files containing arrays when passed an array starting object', function(done) {
+  var stream = gulp.src(['test/json/array1.json', 'test/json/array2.json']).pipe(merge('combined.json', false, []));
+
+  stream.on('data', function(file) {
+    var expected = ['[', '\t{', '\t\t"a": 1,', '\t\t"b": 2,', '\t\t"c": 3,', '\t\t"d": 4', '\t}', ']'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
