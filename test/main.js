@@ -16,7 +16,7 @@ require('mocha');
 require('should');
 
 it('should combine JSON files', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json'));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json'));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -28,7 +28,7 @@ it('should combine JSON files', function(done) {
 });
 
 it('should modify property based on input function', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', function(json) {
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', function(json) {
     if (json.place) {
       json.place = 'New York';
     }
@@ -46,7 +46,7 @@ it('should modify property based on input function', function(done) {
 });
 
 it('should add property based on input function', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', function(json) {
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', function(json) {
     if (json.settings) {
       json.settings.timezone = 'PST';
     }
@@ -64,7 +64,7 @@ it('should add property based on input function', function(done) {
 });
 
 it('should delete property based on input function', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', function(json) {
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', function(json) {
     if (json.pet) {
       delete json.pet;
     }
@@ -82,7 +82,7 @@ it('should delete property based on input function', function(done) {
 });
 
 it('should merge object if given as input function', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', {"testing": true}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', {"testing": true}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"testing": true,', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -94,7 +94,7 @@ it('should merge object if given as input function', function(done) {
 });
 
 it('should use supplied start object as base', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, {"initial": "value"}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, {"initial": "value"}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -106,7 +106,7 @@ it('should use supplied start object as base', function(done) {
 });
 
 it('should use supplied final object to overwrite', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, {"place": "Las Vegas"}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, {"place": "Las Vegas"}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -118,7 +118,7 @@ it('should use supplied final object to overwrite', function(done) {
 });
 
 it('should output a node module when true is passed as the exportModule param', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, true));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, true));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -132,7 +132,7 @@ it('should output a node module when true is passed as the exportModule param', 
 });
 
 it('should not output a node module when false is passed as the exportModule param', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, false));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, false));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -144,7 +144,7 @@ it('should not output a node module when false is passed as the exportModule par
 });
 
 it('should not output a node module when nothing is passed as the exportModule param', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -156,7 +156,7 @@ it('should not output a node module when nothing is passed as the exportModule p
 });
 
 it('should not output a node module when empty string is passed as the exportModule param', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, ''));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, ''));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -168,7 +168,7 @@ it('should not output a node module when empty string is passed as the exportMod
 });
 
 it('should output the passed variable when a name is passed as the exportModule param', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, 'varname'));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, 'varname'));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -182,7 +182,7 @@ it('should output the passed variable when a name is passed as the exportModule 
 });
 
 it('should concat arrays if enabled', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, false, false, true));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, false, true));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"cool",', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -207,7 +207,7 @@ it('should do nothing with no files', function(done) {
 
 it('should error on invalid start object', function(done) {
   try {
-    var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, 10));
+    var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, 10));
 
     should.fail(null, null, 'Should have failed!');
   } catch (err) {
@@ -219,7 +219,7 @@ it('should error on invalid start object', function(done) {
 
 it('should error on invalid end object', function(done) {
   try {
-    var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', false, false, 10));
+    var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, 10));
 
     should.fail(null, null, 'Should have failed!');
   } catch (err) {
@@ -230,7 +230,7 @@ it('should error on invalid end object', function(done) {
 });
 
 it('should error in editor function', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge('combined.json', function(json) {
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', function(json) {
     throw new Error('Oh no!');
   }));
 
@@ -246,10 +246,11 @@ it('should error in editor function', function(done) {
 });
 
 it('should error on invalid JSON', function(done) {
-  var stream = gulp.src('test/invalid.json').pipe(merge('combined.json'));
+  var stream = gulp.src('test/json/invalid.json'
+    ).pipe(merge('combined.json'));
 
   stream.on('error', function(err) {
-    err.message.should.match(/Error while parsing .+test\/invalid.json: Unexpected token I/);
+    err.message.should.match(/Error while parsing .+test\/json\/invalid.json: Unexpected token I/);
 
     done();
   });
@@ -284,7 +285,7 @@ it('should error on stream', function(done) {
 });
 
 it('should merge when file is passed in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({fileName: 'combined.json'}));
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({fileName: 'combined.json'}));
 
   stream.on('data', function(file) {
     var expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
@@ -297,7 +298,7 @@ it('should merge when file is passed in options object', function(done) {
 
 
 it('should allow the editor function in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     edit: function(json) {
       if (json.place) {
@@ -318,7 +319,7 @@ it('should allow the editor function in options object', function(done) {
 });
 
 it('should use supplied start object as base when passed in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     startObj: {'initial': 'value'}
   }));
@@ -333,7 +334,7 @@ it('should use supplied start object as base when passed in options object', fun
 });
 
 it('should use supplied final object to overwrite when passed in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     endObj: {'place': 'Las Vegas'}
   }));
@@ -348,7 +349,7 @@ it('should use supplied final object to overwrite when passed in options object'
 });
 
 it('should output a node module when exportModule is true in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     exportModule: true
   }));
@@ -365,7 +366,7 @@ it('should output a node module when exportModule is true in options object', fu
 });
 
 it('should use jsonReplacer when stringifying if passed in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     jsonReplacer: function(key, value) {
       if (key === 'pet') {
@@ -386,7 +387,7 @@ it('should use jsonReplacer when stringifying if passed in options object', func
 });
 
 it('should use jsonSpace when stringifying if passed in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     jsonSpace: '  ',
   }));
@@ -401,7 +402,7 @@ it('should use jsonSpace when stringifying if passed in options object', functio
 });
 
 it('should concat arrays if enabled in options object', function(done) {
-  var stream = gulp.src('test/json/*.json').pipe(merge({
+  var stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
     fileName: 'combined.json',
     concatArrays: true,
   }));
