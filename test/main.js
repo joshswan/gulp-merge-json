@@ -439,3 +439,56 @@ it('should concat root-level arrays from JSON files when passed an array startin
     done();
   });
 });
+
+it('should parse and combine JSON5 files when enabled', function(done) {
+  var stream = gulp.src(['test/json/test1.json5', 'test/json/test2.json5']).pipe(merge({
+    fileName: 'combined.json',
+    json5: true,
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\tname: "Josh",', '\tpet: {', '\t\tname: "Indy"', '\t},', '\ttags: [', '\t\t"awesome"', '\t],', '\tplace: "San Francisco",', '\tsettings: {', '\t\tlikesSleep: true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should use jsonReplacer with JSON5 when stringifying if passed in options object', function(done) {
+  var stream = gulp.src(['test/json/test1.json5', 'test/json/test2.json5']).pipe(merge({
+    fileName: 'combined.json',
+    json5: true,
+    jsonReplacer: function(key, value) {
+      if (key === 'pet') {
+        return undefined;
+      }
+
+      return value;
+    }
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '\tname: "Josh",', '\ttags: [', '\t\t"awesome"', '\t],', '\tplace: "San Francisco",', '\tsettings: {', '\t\tlikesSleep: true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should use jsonSpace with JSON5 when stringifying if passed in options object', function(done) {
+  var stream = gulp.src(['test/json/test1.json5', 'test/json/test2.json5']).pipe(merge({
+    fileName: 'combined.json',
+    jsonSpace: '  ',
+    json5: true,
+  }));
+
+  stream.on('data', function(file) {
+    var expected = ['{', '  name: "Josh",', '  pet: {', '    name: "Indy"', '  },', '  tags: [', '    "awesome"', '  ],', '  place: "San Francisco",', '  settings: {', '    likesSleep: true', '  }', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});

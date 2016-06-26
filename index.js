@@ -7,6 +7,7 @@
 
 var _ = require('lodash');
 var gutil = require('gulp-util');
+var JSON5 = require('json5');
 var path = require('path');
 var through = require('through');
 
@@ -25,6 +26,7 @@ function merge(a, b, concatArrays) {
 module.exports = function(fileName, edit, startObj, endObj, exportModule, concatArrays) {
   var jsonReplacer = null;
   var jsonSpace = '\t';
+  var json5 = false;
 
   if (typeof fileName === 'object') {
     // use first argument as opts
@@ -37,7 +39,10 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule, concat
     jsonReplacer = opts.jsonReplacer || null;
     jsonSpace = opts.jsonSpace || '\t';
     concatArrays = opts.concatArrays;
+    json5 = opts.json5;
   }
+
+  var _JSON = (json5) ? JSON5 : JSON;
 
   if ((startObj && typeof startObj !== 'object') || (endObj && typeof endObj !== 'object')) {
     throw new gutil.PluginError(PLUGIN_NAME, PLUGIN_NAME + ': Invalid start and/or end object!');
@@ -72,7 +77,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule, concat
     }
 
     try {
-      parsed = JSON.parse(file.contents.toString('utf8'));
+      parsed = _JSON.parse(file.contents.toString('utf8'));
     } catch(err) {
       err.message = 'Error while parsing ' + file.path + ': ' + err.message;
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
@@ -94,7 +99,7 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule, concat
       merged = merge(merged, endObj, concatArrays);
     }
 
-    var contents = JSON.stringify(merged, jsonReplacer, jsonSpace);
+    var contents = _JSON.stringify(merged, jsonReplacer, jsonSpace);
 
     if (exportModule === true) {
       contents = 'module.exports = ' + contents + ';';
