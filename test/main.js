@@ -427,3 +427,15 @@ it('should merge JSON files containing arrays when passed an array starting obje
     done();
   });
 });
+
+it('should concat root-level arrays from JSON files when passed an array starting object and concat option enabled', function(done) {
+  var stream = gulp.src(['test/json/array1.json', 'test/json/array2.json']).pipe(merge('combined.json', false, [], false, false, true));
+
+  stream.on('data', function(file) {
+    var expected = ['[', '\t{', '\t\t"a": 1,', '\t\t"b": 2', '\t},', '\t{', '\t\t"c": 3,', '\t\t"d": 4', '\t}', ']'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});

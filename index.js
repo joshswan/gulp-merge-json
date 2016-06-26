@@ -13,6 +13,10 @@ var through = require('through');
 var PLUGIN_NAME = 'gulp-merge-json';
 
 function merge(a, b, concatArrays) {
+  if (Array.isArray(a) && concatArrays) {
+    return a.concat(b);
+  }
+
   return _.mergeWith(a, b, function(a, b) {
     return Array.isArray(a) && concatArrays ? a.concat(b) : undefined;
   });
