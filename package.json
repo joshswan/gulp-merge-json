@@ -1,6 +1,6 @@
 {
   "name": "gulp-merge-json",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A gulp plugin to merge JSON files into one file",
   "author": "Josh Swan <josh@sportifik.com>",
   "main": "./index.js",
