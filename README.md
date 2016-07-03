@@ -83,6 +83,30 @@ gulp.src('jsonFiles/**/*.json')
         jsonReplacer = function() {/*...*/}
     })
     .pipe(gulp.dest('./dist'));
+
+/*
+	Concatenate arrays
+ */
+gulp.src('jsonFiles/**/*.json')
+	.pipe(merge('combined.json', false, false, false, false, true))
+	.pipe(gulp.dest('./dist'));
+
+gulp.src('jsonFiles/**/*.json')
+	.pipe(merge({
+		fileName: 'combined.json',
+		concatArrays: true,
+	}))
+	.pipe(gulp.dest('./dist'));
+
+/*
+	JSON5
+ */
+gulp.src('jsonFiles/**/*.json5')
+	.pipe(merge({
+		fileName: 'combined.json5',
+		json5: true,
+	}))
+	.pipe(gulp.dest('./dist'));
 ```
 
 
