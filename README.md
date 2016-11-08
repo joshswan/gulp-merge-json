@@ -79,8 +79,8 @@ gulp.src('jsonFiles/**/*.json')
 gulp.src('jsonFiles/**/*.json')
     .pipe(merge({
         fileName: 'dataModule.js',
-        jsonSpace = '  ',
-        jsonReplacer = function() {/*...*/}
+        jsonSpace: '  ',
+        jsonReplacer: function() {/*...*/}
     })
     .pipe(gulp.dest('./dist'));
 
