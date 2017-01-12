@@ -1,5 +1,5 @@
 /*!
- * Copyright 2015 Josh Swan
+ * Copyright 2015-2017 Josh Swan
  * Released under the MIT license
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
@@ -272,7 +272,7 @@ it('should error on stream', function(done) {
 
   stream.on('error', function(err) {
     err.message.should.equal(PLUGIN_NAME + ': Streaming not supported!');
-    
+
     done();
   });
 
