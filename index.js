@@ -4,6 +4,8 @@
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
 
+'use strict';
+
 const _ = require('lodash');
 const deprecate = require('deprecate');
 const gutil = require('gulp-util');

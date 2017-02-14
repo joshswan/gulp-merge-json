@@ -4,6 +4,8 @@
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
 
+'use strict';
+
 const fs = require('fs');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
