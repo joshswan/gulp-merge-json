@@ -4,6 +4,29 @@
 A gulp plugin for deep-merging multiple JSON files into one file. Export as JSON or a node module.
 
 ## Usage
+
+```javascript
+gulp.src('jsonFiles/**/*.json')
+	.pipe(merge(options))
+	.pipe(gulp.dest('./dist'));
+```
+
+### Options
+
+| Key | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `fileName` | `String` | `combined.json` | Output filename |
+| `edit` | `Function` | `json => json` | Edit function (add/remove/edit keys during merge) |
+| `startObj` | `Object/Array` | `{}` | Starting object to merge into (useful for providing default values) |
+| `endObj` | `Object/Array` | | Object to merge after file merging complete (useful for overwriting with special values) |
+| `exportModule` | `Boolean/String` | `false` | Output `module.exports = {MERGED_JSON_DATA};` or `{exportModule} = {MERGED_JSON_DATA}` when string passed |
+| `concatArrays` | `Boolean` | `false` | Whether to concatenate arrays instead of merging |
+| `mergeArrays` | `Boolean` | `true` | Whether to merge arrays or overwrite completely |
+| `jsonReplacer` | `Function` | | Custom JSON replacer function passed to stringify |
+| `jsonSpace` | `String` | `\t` | String used for white space by stringify |
+| `json5` | `Boolean` | `false` | Use JSON5 instead of JSON for parse and stringify |
+
+## Examples
 ```javascript
 var merge = require('gulp-merge-json');
 
@@ -11,19 +34,22 @@ var merge = require('gulp-merge-json');
 	Basic functionality
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('combined.json'))
+	.pipe(merge())
 	.pipe(gulp.dest('./dist'));
 
 /*
 	Edit JSON with function
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('combined.json', function(parsedJson, file) {
-		if (parsedJson.someValue) {
-			delete parsedJson.otherValue;
-		}
+	.pipe(merge({
+		fileName: 'file.json',
+		edit: (parsedJson, file) => {
+			if (parsedJson.someValue) {
+				delete parsedJson.otherValue;
+			}
 
-		return parsedJson;
+			return parsedJson;
+		},
 	}))
 	.pipe(gulp.dest('./dist'));
 
@@ -31,86 +57,62 @@ gulp.src('jsonFiles/**/*.json')
 	Provide a default object (files are merged in order so object values will be overwritten)
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('combined.json', false, {someKey: 'defaultValue'}))
+	.pipe(merge({
+		startObj: { someKey: 'defaultValue' },
+	}))
 	.pipe(gulp.dest('./dist'));
 
 /*
 	Provide an overwriting object (merged at the end)
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('combined.json', false, false, {someKey: 'specialValue'}))
+	.pipe(merge({
+		endObj: { someKey: 'specialValue' },
+	}))
 	.pipe(gulp.dest('./dist'));
 
 /*
-	Use module.exports
+	Output module.exports = {JSON_DATA}
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('dataModule.js', false, false, false, true))
+	.pipe(merge({
+		exportModule: true,
+	}))
 	.pipe(gulp.dest('./dist'));
 
 /*
-	Use a custom variable to prefix
+	Output a custom variable = {JSON_DATA}
  */
 gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('dataModule.js', false, false, false, 'var my.var'))
+	.pipe(merge({
+		fileName: 'dataModule.js',
+		exportModule: 'const myVar',
+	}))
 	.pipe(gulp.dest('./dist'));
-
-
-/*
-   Provide options as an object
-*/
-gulp.src('jsonFiles/**/*.json')
-    .pipe(merge({
-        fileName: 'dataModule.js',
-        edit: function(parsedJson, file) {
-            if (parsedJson.someValue) {
-                delete parsedJson.otherValue;
-            }
-        },
-        startObj: {someKey: 'defaultValue'},
-        endObj: {someKey: 'specialValue'},
-        exportModule: false,
-    })
-    .pipe(gulp.dest('./dist'));
 
 /*
   Provide replacer and space options for JSON.stringify
 */
 gulp.src('jsonFiles/**/*.json')
     .pipe(merge({
-        fileName: 'dataModule.js',
         jsonSpace: '  ',
-        jsonReplacer: function() {/*...*/}
+        jsonReplacer: (key, value) => {/*...*/}
     })
     .pipe(gulp.dest('./dist'));
 
-/*
-	Concatenate arrays
- */
-gulp.src('jsonFiles/**/*.json')
-	.pipe(merge('combined.json', false, false, false, false, true))
-	.pipe(gulp.dest('./dist'));
-
-gulp.src('jsonFiles/**/*.json')
-	.pipe(merge({
-		fileName: 'combined.json',
-		concatArrays: true,
-	}))
-	.pipe(gulp.dest('./dist'));
 
 /*
 	JSON5
  */
 gulp.src('jsonFiles/**/*.json5')
 	.pipe(merge({
-		fileName: 'combined.json5',
 		json5: true,
 	}))
 	.pipe(gulp.dest('./dist'));
 ```
 
 
-## Example Input
+### Example Input
 ```JSON
 /*
 	json/defaults.json
@@ -147,7 +149,7 @@ gulp.src('jsonFiles/**/*.json5')
 }
 ```
 
-## Example Output
+### Example Output
 ```JSON
 /*
 	dist/combined.json
