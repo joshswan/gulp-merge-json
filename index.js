@@ -3,73 +3,83 @@
  * Released under the MIT license
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
-'use strict';
 
-var _ = require('lodash');
-var gutil = require('gulp-util');
-var JSON5 = require('json5');
-var path = require('path');
-var through = require('through');
+const _ = require('lodash');
+const deprecate = require('deprecate');
+const gutil = require('gulp-util');
+const JSON5 = require('json5');
+const path = require('path');
+const through = require('through');
 
-var PLUGIN_NAME = 'gulp-merge-json';
+const PLUGIN_NAME = 'gulp-merge-json';
 
 function merge(a, b, concatArrays) {
   if (Array.isArray(a) && concatArrays) {
     return a.concat(b);
   }
 
-  return _.mergeWith(a, b, function(a, b) {
-    return Array.isArray(a) && concatArrays ? a.concat(b) : undefined;
-  });
+  return _.mergeWith(a, b, (objValue, srcValue) => (
+    Array.isArray(objValue) && concatArrays ? objValue.concat(srcValue) : undefined
+  ));
 }
 
-module.exports = function(fileName, edit, startObj, endObj, exportModule, concatArrays) {
-  var jsonReplacer = null;
-  var jsonSpace = '\t';
-  var json5 = false;
+module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModule, concatArrays) {
+  let options = {
+    // Defaults
+    fileName: 'combined.json',
+    edit: json => json,
+    startObj: {},
+    endObj: null,
+    exportModule: false,
+    concatArrays: false,
+    jsonReplacer: null,
+    jsonSpace: '\t',
+    json5: false,
+  };
 
   if (typeof fileName === 'object') {
-    // use first argument as opts
-    var opts = fileName;
-    fileName = opts.fileName;
-    edit = opts.edit;
-    startObj = opts.startObj;
-    endObj = opts.endObj;
-    exportModule = opts.exportModule;
-    jsonReplacer = opts.jsonReplacer || null;
-    jsonSpace = opts.jsonSpace || '\t';
-    concatArrays = opts.concatArrays;
-    json5 = opts.json5;
-  }
-
-  var _JSON = (json5) ? JSON5 : JSON;
-
-  if ((startObj && typeof startObj !== 'object') || (endObj && typeof endObj !== 'object')) {
-    throw new gutil.PluginError(PLUGIN_NAME, PLUGIN_NAME + ': Invalid start and/or end object!');
-  }
-
-  var editFunc;
-
-  if (typeof edit === 'function') {
-    editFunc = edit;
-  } else if (typeof edit === 'object') {
-    editFunc = function(json) { return merge(json, edit, concatArrays); };
+    options = Object.assign(options, fileName);
   } else {
-    editFunc = function(json) { return json; };
+    // DEPRECATED
+    deprecate('Passing multiple arguments is deprecated! Pass an options object instead.');
+
+    options = Object.assign(options, {
+      fileName,
+      edit: edit || options.edit,
+      startObj: startObj || options.startObj,
+      endObj: endObj || options.endObj,
+      exportModule: exportModule || options.exportModule,
+      concatArrays: concatArrays || options.concatArrays,
+    });
   }
 
-  var merged = startObj || {};
-  var firstFile = null;
+  const jsonLib = (options.json5) ? JSON5 : JSON;
+
+  if ((options.startObj && typeof options.startObj !== 'object') || (options.endObj && typeof options.endObj !== 'object')) {
+    throw new gutil.PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
+  }
+
+  if (typeof options.edit === 'object') {
+    // DEPRECATED
+    deprecate('Using an object as an edit function is deprecated! Use a function instead.');
+
+    const obj = options.edit;
+
+    options.edit = json => merge(json, obj, options.concatArrays);
+  }
+
+  let merged = options.startObj;
+  let firstFile = null;
 
   function parseAndMerge(file) {
-    var parsed;
+    let parsed;
 
     if (file.isNull()) {
       return this.queue(file);
     }
 
     if (file.isStream()) {
-      return this.emit('error', new gutil.PluginError(PLUGIN_NAME, PLUGIN_NAME + ': Streaming not supported!'));
+      return this.emit('error', new gutil.PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`));
     }
 
     if (!firstFile) {
@@ -77,14 +87,14 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule, concat
     }
 
     try {
-      parsed = _JSON.parse(file.contents.toString('utf8'));
-    } catch(err) {
-      err.message = 'Error while parsing ' + file.path + ': ' + err.message;
+      parsed = jsonLib.parse(file.contents.toString('utf8'));
+    } catch (err) {
+      err.message = `Error while parsing ${file.path}: ${err.message}`;
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
 
     try {
-      merged = merge(merged, editFunc(parsed, file), concatArrays);
+      merged = merge(merged, options.edit(parsed, file), options.concatArrays);
     } catch (err) {
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
@@ -95,22 +105,22 @@ module.exports = function(fileName, edit, startObj, endObj, exportModule, concat
       return this.emit('end');
     }
 
-    if (endObj) {
-      merged = merge(merged, endObj, concatArrays);
+    if (options.endObj) {
+      merged = merge(merged, options.endObj, options.concatArrays);
     }
 
-    var contents = _JSON.stringify(merged, jsonReplacer, jsonSpace);
+    let contents = jsonLib.stringify(merged, options.jsonReplacer, options.jsonSpace);
 
-    if (exportModule === true) {
-      contents = 'module.exports = ' + contents + ';';
-    } else if (exportModule){
-      contents = exportModule + ' = ' + contents + ';';
+    if (options.exportModule === true) {
+      contents = `module.exports = ${contents};`;
+    } else if (options.exportModule) {
+      contents = `${options.exportModule} = ${contents};`;
     }
 
-    var output = new gutil.File({
+    const output = new gutil.File({
       cwd: firstFile.cwd,
       base: firstFile.base,
-      path: path.join(firstFile.base, fileName),
+      path: path.join(firstFile.base, options.fileName),
       contents: new Buffer(contents),
     });
 

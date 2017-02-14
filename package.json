@@ -22,6 +22,7 @@
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
+    "deprecate": "^1.0.0",
     "gulp-util": "^3.0.8",
     "json5": "^0.5.1",
     "lodash": "^4.17.4",
@@ -30,6 +31,8 @@
   "devDependencies": {
     "coveralls": "*",
     "eslint": "^3.9.1",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
     "gulp": "^3.9.0",
     "istanbul": "*",
     "mocha": "^3.2.0",
