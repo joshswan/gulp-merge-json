@@ -22,9 +22,9 @@
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "gulp-util": "^3.0.6",
-    "json5": "^0.5.0",
-    "lodash": "^4.6.1",
+    "gulp-util": "^3.0.8",
+    "json5": "^0.5.1",
+    "lodash": "^4.17.4",
     "through": "^2.3.8"
   },
   "devDependencies": {
@@ -32,8 +32,8 @@
     "eslint": "^3.9.1",
     "gulp": "^3.9.0",
     "istanbul": "*",
-    "mocha": "*",
-    "should": "^11.1.1"
+    "mocha": "^3.2.0",
+    "should": "^11.2.0"
   },
   "license": "MIT"
 }
