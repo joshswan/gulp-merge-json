@@ -15,14 +15,23 @@ const through = require('through');
 
 const PLUGIN_NAME = 'gulp-merge-json';
 
-function merge(a, b, concatArrays) {
+function merge(a, b, concatArrays, mergeArrays) {
   if (Array.isArray(a) && concatArrays) {
     return a.concat(b);
   }
 
-  return _.mergeWith(a, b, (objValue, srcValue) => (
-    Array.isArray(objValue) && concatArrays ? objValue.concat(srcValue) : undefined
-  ));
+  return _.mergeWith(a, b, (objValue, srcValue) => {
+    // Handle array merging
+    if (Array.isArray(objValue) && Array.isArray(srcValue)) {
+      if (concatArrays) {
+        return objValue.concat(srcValue);
+      } else if (!mergeArrays) {
+        return srcValue;
+      }
+    }
+
+    return undefined;
+  });
 }
 
 module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModule, concatArrays) {
@@ -34,6 +43,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     endObj: null,
     exportModule: false,
     concatArrays: false,
+    mergeArrays: true,
     jsonReplacer: null,
     jsonSpace: '\t',
     json5: false,
@@ -67,7 +77,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
 
     const obj = options.edit;
 
-    options.edit = json => merge(json, obj, options.concatArrays);
+    options.edit = json => merge(json, obj, options.concatArrays, options.mergeArrays);
   }
 
   let merged = options.startObj;
@@ -96,7 +106,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     }
 
     try {
-      merged = merge(merged, options.edit(parsed, file), options.concatArrays);
+      merged = merge(merged, options.edit(parsed, file), options.concatArrays, options.mergeArrays);
     } catch (err) {
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
@@ -108,7 +118,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     }
 
     if (options.endObj) {
-      merged = merge(merged, options.endObj, options.concatArrays);
+      merged = merge(merged, options.endObj, options.concatArrays, options.mergeArrays);
     }
 
     let contents = jsonLib.stringify(merged, options.jsonReplacer, options.jsonSpace);

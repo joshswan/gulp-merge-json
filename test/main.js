@@ -20,7 +20,7 @@ it('should combine JSON files', (done) => {
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json'));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -38,7 +38,7 @@ it('should modify property based on input function', (done) => {
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "New York",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "New York",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -56,7 +56,7 @@ it('should add property based on input function', (done) => {
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true,', '\t\t"timezone": "PST"', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true,', '\t\t"timezone": "PST"', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -74,7 +74,7 @@ it('should delete property based on input function', (done) => {
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -86,7 +86,7 @@ it('should merge object if given as input function', (done) => {
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', { testing: true }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"testing": true,', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"testing": true,', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -98,7 +98,7 @@ it('should use supplied start object as base', (done) => {
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, { initial: 'value' }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -110,7 +110,7 @@ it('should use supplied final object to overwrite', (done) => {
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, { place: 'Las Vegas' }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -122,7 +122,7 @@ it('should output a node module when true is passed as the exportModule param', 
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, true));
 
   stream.on('data', (file) => {
-    const expected = `module.exports = ${['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '};'].join('\n')}`;
+    const expected = `module.exports = ${['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '};'].join('\n')}`;
 
     file.contents.toString().should.eql(expected);
 
@@ -134,7 +134,7 @@ it('should not output a node module when false is passed as the exportModule par
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, false));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -146,7 +146,7 @@ it('should not output a node module when nothing is passed as the exportModule p
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -158,7 +158,7 @@ it('should not output a node module when empty string is passed as the exportMod
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, ''));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -170,7 +170,7 @@ it('should output the passed variable when a name is passed as the exportModule 
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, 'varname'));
 
   stream.on('data', (file) => {
-    const expected = `varname = ${['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '};'].join('\n')}`;
+    const expected = `varname = ${['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '};'].join('\n')}`;
 
     file.contents.toString().should.eql(expected);
 
@@ -182,7 +182,21 @@ it('should concat arrays if enabled', (done) => {
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge('combined.json', false, false, false, false, true));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"cool",', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"cool",', '\t\t"fun",', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
+it('should not merge arrays if disabled', (done) => {
+  const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
+    mergeArrays: false,
+  }));
+
+  stream.on('data', (file) => {
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -284,7 +298,7 @@ it('should merge when file is passed in options object', (done) => {
   const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({ fileName: 'combined.json' }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -306,7 +320,7 @@ it('should allow the editor function in options object', (done) => {
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "New York",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "New York",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -321,7 +335,7 @@ it('should use supplied start object as base when passed in options object', (do
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -336,7 +350,7 @@ it('should use supplied final object to overwrite when passed in options object'
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "Las Vegas",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -351,7 +365,7 @@ it('should output a node module when exportModule is true in options object', (d
   }));
 
   stream.on('data', (file) => {
-    const expected = `module.exports = ${['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '};'].join('\n')}`;
+    const expected = `module.exports = ${['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '};'].join('\n')}`;
 
     file.contents.toString().should.eql(expected);
 
@@ -372,7 +386,7 @@ it('should use jsonReplacer when stringifying if passed in options object', (don
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"tags": [', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -387,7 +401,7 @@ it('should use jsonSpace when stringifying if passed in options object', (done) 
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '  "name": "Josh",', '  "pet": {', '    "name": "Indy"', '  },', '  "tags": [', '    "awesome"', '  ],', '  "place": "San Francisco",', '  "settings": {', '    "likesSleep": true', '  }', '}'].join('\n');
+    const expected = ['{', '  "name": "Josh",', '  "pet": {', '    "name": "Indy"', '  },', '  "tags": [', '    "awesome",', '    "fun"', '  ],', '  "place": "San Francisco",', '  "settings": {', '    "likesSleep": true', '  }', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -402,7 +416,7 @@ it('should concat arrays if enabled in options object', (done) => {
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"cool",', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"cool",', '\t\t"fun",', '\t\t"awesome"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
