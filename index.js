@@ -29,7 +29,9 @@ const mergeOrConcatArrays = (concatArrays, mergeArrays) => (objValue, srcValue) 
 }
 
 function merge(a, b, options) {
-  const { customizer, concatArrays, mergeArrays } = options;
+  const customizer = options.customizer;
+  const concatArrays = options.concatArrays;
+  const mergeArrays = options.mergeArrays;
   
   if (Array.isArray(a) && concatArrays) {
     return a.concat(b);
