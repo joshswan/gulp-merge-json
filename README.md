@@ -22,6 +22,7 @@ gulp.src('jsonFiles/**/*.json')
 | `exportModule` | `Boolean/String` | `false` | Output `module.exports = {MERGED_JSON_DATA};` or `{exportModule} = {MERGED_JSON_DATA}` when string passed |
 | `concatArrays` | `Boolean` | `false` | Whether to concatenate arrays instead of merging |
 | `mergeArrays` | `Boolean` | `true` | Whether to merge arrays or overwrite completely |
+| `customizer` | `Function` | | Custom merge function for use with [`mergeWith`](https://lodash.com/docs/#mergeWith) |
 | `jsonReplacer` | `Function` | | Custom JSON replacer function passed to stringify |
 | `jsonSpace` | `String` | `\t` | String used for white space by stringify |
 | `json5` | `Boolean` | `false` | Use JSON5 instead of JSON for parse and stringify |
