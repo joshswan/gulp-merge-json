@@ -51,7 +51,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
 
   if (typeof fileName === 'object') {
     options = Object.assign(options, fileName);
-  } else {
+  } else if (arguments.length) {
     // DEPRECATED
     deprecate('Passing multiple arguments is deprecated! Pass an options object instead.');
 
