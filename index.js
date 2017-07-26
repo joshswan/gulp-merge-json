@@ -7,7 +7,6 @@
 'use strict';
 
 const _ = require('lodash');
-const deprecate = require('deprecate');
 const gutil = require('gulp-util');
 const JSON5 = require('json5');
 const path = require('path');
@@ -15,23 +14,25 @@ const through = require('through');
 
 const PLUGIN_NAME = 'gulp-merge-json';
 
-function merge(a, b, concatArrays, mergeArrays) {
+const mergeOrConcatArrays = (concatArrays, mergeArrays) => (objValue, srcValue) => {
+  // Handle array merging
+  if (Array.isArray(objValue) && Array.isArray(srcValue)) {
+    if (concatArrays) {
+      return objValue.concat(srcValue);
+    } else if (!mergeArrays) {
+      return srcValue;
+    }
+  }
+
+  return undefined;
+}
+
+function merge(a, b, { customizer, concatArrays, mergeArrays }) {
   if (Array.isArray(a) && concatArrays) {
     return a.concat(b);
   }
 
-  return _.mergeWith(a, b, (objValue, srcValue) => {
-    // Handle array merging
-    if (Array.isArray(objValue) && Array.isArray(srcValue)) {
-      if (concatArrays) {
-        return objValue.concat(srcValue);
-      } else if (!mergeArrays) {
-        return srcValue;
-      }
-    }
-
-    return undefined;
-  });
+  return _.mergeWith(a, b, customizer || mergeOrConcatArrays(concatArrays, mergeArrays));
 }
 
 module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModule, concatArrays) {
@@ -44,6 +45,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     exportModule: false,
     concatArrays: false,
     mergeArrays: true,
+    customizer: null,
     jsonReplacer: null,
     jsonSpace: '\t',
     json5: false,
@@ -52,9 +54,6 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
   if (typeof fileName === 'object') {
     options = Object.assign(options, fileName);
   } else if (arguments.length) {
-    // DEPRECATED
-    deprecate('Passing multiple arguments is deprecated! Pass an options object instead.');
-
     options = Object.assign(options, {
       fileName: fileName || options.fileName,
       edit: edit || options.edit,
@@ -77,7 +76,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
 
     const obj = options.edit;
 
-    options.edit = json => merge(json, obj, options.concatArrays, options.mergeArrays);
+    options.edit = json => merge(json, obj, options);
   }
 
   let merged = options.startObj;
@@ -106,7 +105,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     }
 
     try {
-      merged = merge(merged, options.edit(parsed, file), options.concatArrays, options.mergeArrays);
+      merged = merge(merged, options.edit(parsed, file), options);
     } catch (err) {
       return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
     }
@@ -118,7 +117,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     }
 
     if (options.endObj) {
-      merged = merge(merged, options.endObj, options.concatArrays, options.mergeArrays);
+      merged = merge(merged, options.endObj, options);
     }
 
     let contents = jsonLib.stringify(merged, options.jsonReplacer, options.jsonSpace);
