@@ -7,6 +7,7 @@
 'use strict';
 
 const _ = require('lodash');
+const deprecate = require('deprecate');
 const gutil = require('gulp-util');
 const JSON5 = require('json5');
 const path = require('path');
@@ -54,6 +55,9 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
   if (typeof fileName === 'object') {
     options = Object.assign(options, fileName);
   } else if (arguments.length) {
+    // DEPRECATED
+    deprecate('Passing multiple arguments is deprecated! Pass an options object instead.');
+
     options = Object.assign(options, {
       fileName: fileName || options.fileName,
       edit: edit || options.edit,
