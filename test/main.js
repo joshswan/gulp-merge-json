@@ -186,6 +186,20 @@ it('should not merge arrays if disabled', (done) => {
   });
 });
 
+it('should use customizer function for merging if supplied', (done) => {
+  const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
+    customizer: objValue => objValue,
+  }));
+
+  stream.on('data', (file) => {
+    const expected = ['{', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"cool",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+    file.contents.toString().should.eql(expected);
+
+    done();
+  });
+});
+
 it('should do nothing with no files', (done) => {
   const stream = gulp.src('test/empty/*.json').pipe(merge('combined.json'));
 
