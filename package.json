@@ -29,6 +29,7 @@
     "through": "^2.3.8"
   },
   "devDependencies": {
+    "@types/gulp-util": "^3.0.31",
     "coveralls": "*",
     "eslint": "^3.9.1",
     "eslint-config-airbnb-base": "^11.1.0",
