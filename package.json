@@ -4,6 +4,7 @@
   "description": "A gulp plugin to merge JSON files into one file",
   "author": "Josh Swan <josh@sportifik.com>",
   "main": "./index.js",
+  "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/joshswan/gulp-merge-json"
