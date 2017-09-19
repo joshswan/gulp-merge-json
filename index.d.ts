@@ -52,7 +52,7 @@ declare module 'gulp-merge-json' {
 
   type obj = {[key: string]: any};
 
-  const gulp_merge_json: (options: IGulpMergeJsonOptions) => NodeJS.ReadWriteStream;
+  const gulp_merge_json: (options: IGulpMergeJsonOptions) => NodeJS.ReadStream;
 
   export = gulp_merge_json;
 }
