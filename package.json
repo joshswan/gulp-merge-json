@@ -4,6 +4,7 @@
   "description": "A gulp plugin to merge JSON files into one file",
   "author": "Josh Swan <josh@sportifik.com>",
   "main": "./index.js",
+  "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/joshswan/gulp-merge-json"
@@ -29,6 +30,7 @@
     "through": "^2.3.8"
   },
   "devDependencies": {
+    "@types/gulp-util": "^3.0.31",
     "coveralls": "*",
     "eslint": "^3.9.1",
     "eslint-config-airbnb-base": "^11.1.0",
