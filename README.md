@@ -31,15 +31,15 @@ gulp.src('jsonFiles/**/*.json')
 ```javascript
 var merge = require('gulp-merge-json');
 
-/*
-	Basic functionality
+/**
+ * Basic functionality
  */
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge())
 	.pipe(gulp.dest('./dist'));
 
-/*
-	Edit JSON with function
+/**
+ * Edit JSON with function
  */
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge({
@@ -54,8 +54,8 @@ gulp.src('jsonFiles/**/*.json')
 	}))
 	.pipe(gulp.dest('./dist'));
 
-/*
-	Provide a default object (files are merged in order so object values will be overwritten)
+/**
+ * Provide a default object (files are merged in order so object values will be overwritten)
  */
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge({
@@ -63,8 +63,8 @@ gulp.src('jsonFiles/**/*.json')
 	}))
 	.pipe(gulp.dest('./dist'));
 
-/*
-	Provide an overwriting object (merged at the end)
+/**
+ * Provide an overwriting object (merged at the end)
  */
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge({
@@ -72,8 +72,8 @@ gulp.src('jsonFiles/**/*.json')
 	}))
 	.pipe(gulp.dest('./dist'));
 
-/*
-	Output module.exports = {JSON_DATA}
+/**
+ * Output module.exports = {JSON_DATA}
  */
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge({
@@ -81,8 +81,8 @@ gulp.src('jsonFiles/**/*.json')
 	}))
 	.pipe(gulp.dest('./dist'));
 
-/*
-	Output a custom variable = {JSON_DATA}
+/**
+ * Output a custom variable = {JSON_DATA}
  */
 gulp.src('jsonFiles/**/*.json')
 	.pipe(merge({
@@ -91,9 +91,9 @@ gulp.src('jsonFiles/**/*.json')
 	}))
 	.pipe(gulp.dest('./dist'));
 
-/*
-  Provide replacer and space options for JSON.stringify
-*/
+/**
+ * Provide replacer and space options for JSON.stringify
+ */
 gulp.src('jsonFiles/**/*.json')
     .pipe(merge({
         jsonSpace: '  ',
@@ -101,9 +101,26 @@ gulp.src('jsonFiles/**/*.json')
     })
     .pipe(gulp.dest('./dist'));
 
+/**
+ * Use a customizer function for custom merging behavior
+ */
+gulp.src('jsonFiles/**/*.json')
+  .pipe(merge({
+    customizer: (objA, objB) => {
+      // Example: Concat arrays but only keep unique values
+      if (Array.isArray(objA) && Array.isArray(objB)) {
+        return objA.concat(objB).filter((item, index, array) => (
+          array.indexOf(item) === index
+        ));
+      }
 
-/*
-	JSON5
+      return undefined;
+    },
+  }))
+  .pipe(gulp.dest('./dist'));
+
+/**
+ * JSON5
  */
 gulp.src('jsonFiles/**/*.json5')
 	.pipe(merge({
