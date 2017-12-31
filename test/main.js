@@ -8,9 +8,9 @@
 
 const fs = require('fs');
 const gulp = require('gulp');
-const gutil = require('gulp-util');
 const merge = require('../');
 const should = require('should');
+const Vinyl = require('vinyl');
 
 const PLUGIN_NAME = 'gulp-merge-json';
 
@@ -267,7 +267,7 @@ it('should error on invalid JSON', (done) => {
 });
 
 it('should error on stream', (done) => {
-  const srcFile = new gutil.File({
+  const srcFile = new Vinyl({
     path: 'test/invalid/stream.txt',
     cwd: 'test/',
     base: 'test/invalid',
