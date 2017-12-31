@@ -24,10 +24,11 @@
   },
   "dependencies": {
     "deprecate": "^1.0.0",
-    "gulp-util": "^3.0.8",
     "json5": "^0.5.1",
     "lodash": "^4.17.4",
-    "through": "^2.3.8"
+    "plugin-error": "^0.1.2",
+    "through": "^2.3.8",
+    "vinyl": "^2.1.0"
   },
   "devDependencies": {
     "@types/gulp-util": "^3.0.31",

@@ -8,10 +8,11 @@
 
 const _ = require('lodash');
 const deprecate = require('deprecate');
-const gutil = require('gulp-util');
 const JSON5 = require('json5');
 const path = require('path');
+const PluginError = require('plugin-error');
 const through = require('through');
+const Vinyl = require('vinyl');
 
 const PLUGIN_NAME = 'gulp-merge-json';
 
@@ -75,7 +76,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
   const jsonLib = (options.json5) ? JSON5 : JSON;
 
   if ((options.startObj && typeof options.startObj !== 'object') || (options.endObj && typeof options.endObj !== 'object')) {
-    throw new gutil.PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
+    throw new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
   }
 
   if (typeof options.edit === 'object') {
@@ -98,7 +99,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     }
 
     if (file.isStream()) {
-      return this.emit('error', new gutil.PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`));
+      return this.emit('error', new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`));
     }
 
     if (!firstFile) {
@@ -109,13 +110,13 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
       parsed = jsonLib.parse(file.contents.toString('utf8'));
     } catch (err) {
       err.message = `Error while parsing ${file.path}: ${err.message}`;
-      return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
+      return this.emit('error', new PluginError(PLUGIN_NAME, err));
     }
 
     try {
       merged = merge(merged, options.edit(parsed, file), options);
     } catch (err) {
-      return this.emit('error', new gutil.PluginError(PLUGIN_NAME, err));
+      return this.emit('error', new PluginError(PLUGIN_NAME, err));
     }
   }
 
@@ -136,7 +137,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
       contents = `${options.exportModule} = ${contents};`;
     }
 
-    const output = new gutil.File({
+    const output = new Vinyl({
       cwd: firstFile.cwd,
       base: firstFile.base,
       path: path.join(firstFile.base, options.fileName),
