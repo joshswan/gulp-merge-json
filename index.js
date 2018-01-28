@@ -1,5 +1,5 @@
 /*!
- * Copyright 2015-2017 Josh Swan
+ * Copyright 2015-2018 Josh Swan
  * Released under the MIT license
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
