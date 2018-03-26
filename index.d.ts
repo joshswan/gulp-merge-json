@@ -1,5 +1,5 @@
 declare module 'gulp-merge-json' {
-  import { File } from 'vinyl';
+  import * as File from 'vinyl';
 
   interface IGulpMergeJsonOptions {
     /**
