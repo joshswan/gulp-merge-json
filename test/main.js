@@ -270,8 +270,8 @@ it('should error on stream', (done) => {
   const srcFile = new Vinyl({
     path: 'test/invalid/stream.txt',
     cwd: 'test/',
-    base: 'test/invalid',
-    contents: fs.createReadStream('test/invalid/stream.txt'),
+    base: 'test/json/test1',
+    contents: fs.createReadStream('test/json/test1.json'),
   });
 
   const stream = merge('stream.json');
@@ -359,7 +359,7 @@ it('should parse and combine JSON5 files when enabled', (done) => {
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\tname: "Josh",', '\tpet: {', '\t\tname: "Indy"', '\t},', '\ttags: [', '\t\t"awesome"', '\t],', '\tplace: "San Francisco",', '\tsettings: {', '\t\tlikesSleep: true', '\t}', '}'].join('\n');
+    const expected = ['{', "\tname: 'Josh',", '\tpet: {', "\t\tname: 'Indy',", '\t},', '\ttags: [', "\t\t'awesome',", '\t],', "\tplace: 'San Francisco',", '\tsettings: {', '\t\tlikesSleep: true,', '\t},', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -380,7 +380,7 @@ it('should use jsonReplacer with JSON5 when stringifying if passed in options ob
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '\tname: "Josh",', '\ttags: [', '\t\t"awesome"', '\t],', '\tplace: "San Francisco",', '\tsettings: {', '\t\tlikesSleep: true', '\t}', '}'].join('\n');
+    const expected = ['{', "\tname: 'Josh',", '\ttags: [', "\t\t'awesome',", '\t],', "\tplace: 'San Francisco',", '\tsettings: {', '\t\tlikesSleep: true,', '\t},', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 
@@ -395,7 +395,7 @@ it('should use jsonSpace with JSON5 when stringifying if passed in options objec
   }));
 
   stream.on('data', (file) => {
-    const expected = ['{', '  name: "Josh",', '  pet: {', '    name: "Indy"', '  },', '  tags: [', '    "awesome"', '  ],', '  place: "San Francisco",', '  settings: {', '    likesSleep: true', '  }', '}'].join('\n');
+    const expected = ['{', "  name: 'Josh',", '  pet: {', "    name: 'Indy',", '  },', '  tags: [', "    'awesome',", '  ],', "  place: 'San Francisco',", '  settings: {', '    likesSleep: true,', '  },', '}'].join('\n');
 
     file.contents.toString().should.eql(expected);
 

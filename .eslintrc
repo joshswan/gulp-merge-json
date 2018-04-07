@@ -1,8 +1,10 @@
 {
     "extends": "airbnb-base",
     "rules": {
-    	"consistent-return": "off",
-    	"no-param-reassign": ["error", {"props": false}],
+        "consistent-return": "off",
+        "no-buffer-constructor": "off",
+        "no-param-reassign": ["error", {"props": false}],
+        "prefer-destructuring": "off",
     	"strict": "off"
     }
 }
