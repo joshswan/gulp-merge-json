@@ -25,7 +25,7 @@
   "dependencies": {
     "deprecate": "^1.0.0",
     "json5": "^1.0.1",
-    "lodash": "^4.17.5",
+    "lodash.mergewith": "^4.6.1",
     "plugin-error": "^1.0.1",
     "through": "^2.3.8",
     "vinyl": "^2.1.0"
