@@ -6,7 +6,7 @@
 
 'use strict';
 
-const _ = require('lodash');
+const mergeWith = require('lodash.mergewith');
 const deprecate = require('deprecate');
 const JSON5 = require('json5');
 const path = require('path');
@@ -38,7 +38,7 @@ function merge(a, b, options) {
     return a.concat(b);
   }
 
-  return _.mergeWith(a, b, customizer || mergeOrConcatArrays(concatArrays, mergeArrays));
+  return mergeWith(a, b, customizer || mergeOrConcatArrays(concatArrays, mergeArrays));
 }
 
 module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModule, concatArrays) {
