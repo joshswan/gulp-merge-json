@@ -256,7 +256,7 @@ it('should error on invalid JSON', (done) => {
   const stream = gulp.src('test/json/invalid.json').pipe(merge('combined.json'));
 
   stream.on('error', (err) => {
-    err.message.should.match(/Error while parsing .+test\/json\/invalid.json: Unexpected token I/);
+    err.message.should.match(/Error while parsing .+test(\\|\/)json(\\|\/)invalid\.json: Unexpected token I/);
 
     done();
   });
