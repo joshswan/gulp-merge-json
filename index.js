@@ -141,7 +141,7 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
       cwd: firstFile.cwd,
       base: firstFile.base,
       path: path.join(firstFile.base, options.fileName),
-      contents: new Buffer(contents),
+      contents: Buffer.from(contents),
     });
 
     this.emit('data', output);
