@@ -23,7 +23,7 @@
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "deprecate": "^1.0.0",
+    "deprecate": "1.0.0",
     "json5": "^1.0.1",
     "lodash.mergewith": "^4.6.1",
     "plugin-error": "^1.0.1",

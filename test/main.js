@@ -7,12 +7,15 @@
 'use strict';
 
 const fs = require('fs');
+const deprecate = require('deprecate');
 const gulp = require('gulp');
 const merge = require('../');
 const should = require('should');
 const Vinyl = require('vinyl');
 
 const PLUGIN_NAME = 'gulp-merge-json';
+
+deprecate.silence = true;
 
 require('mocha');
 
