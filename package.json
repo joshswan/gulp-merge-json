@@ -5,6 +5,7 @@
   "author": "Josh Swan <josh@disruptivelabs.io>",
   "main": "./index.js",
   "typings": "./index.d.ts",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/joshswan/gulp-merge-json"
@@ -37,11 +38,16 @@
   },
   "devDependencies": {
     "@types/gulp-util": "^3.0.31",
+    "coveralls": "^3.0.9",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.10.0",
     "gulp": "^4.0.2",
-    "jest": "^25.1.0"
+    "jest": "^25.1.0",
+    "jest-junit": "^10.0.0"
   },
-  "license": "MIT"
+  "jest-junit": {
+    "outputDirectory": "./artifacts/jest",
+    "outputName": "results.xml"
+  }
 }
