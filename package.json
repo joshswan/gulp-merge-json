@@ -2,7 +2,7 @@
   "name": "gulp-merge-json",
   "version": "1.3.1",
   "description": "A gulp plugin to merge JSON files into one file",
-  "author": "Josh Swan <josh@sportifik.com>",
+  "author": "Josh Swan <josh@disruptivelabs.io>",
   "main": "./index.js",
   "typings": "./index.d.ts",
   "repository": {
@@ -18,13 +18,19 @@
     "json",
     "merge"
   ],
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
+    "lint": "eslint index.js test/*.js",
     "test": "istanbul test ./node_modules/mocha/bin/_mocha --report html -- test/*.js --reporter spec",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "deprecate": "1.0.0",
-    "json5": "^1.0.1",
+    "json5": "^2.1.1",
     "lodash.mergewith": "^4.6.1",
     "plugin-error": "^1.0.1",
     "through": "^2.3.8",
@@ -33,12 +39,12 @@
   "devDependencies": {
     "@types/gulp-util": "^3.0.31",
     "coveralls": "*",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.10.0",
     "gulp": "^3.9.0",
     "istanbul": "*",
-    "mocha": "^5.0.5",
+    "mocha": "^7.0.1",
     "should": "^13.2.1"
   },
   "license": "MIT"

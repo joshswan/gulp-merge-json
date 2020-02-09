@@ -4,10 +4,7 @@
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
 
-'use strict';
-
 const mergeWith = require('lodash.mergewith');
-const deprecate = require('deprecate');
 const JSON5 = require('json5');
 const path = require('path');
 const PluginError = require('plugin-error');
@@ -21,7 +18,8 @@ const mergeOrConcatArrays = (concatArrays, mergeArrays) => (objValue, srcValue) 
   if (Array.isArray(objValue) && Array.isArray(srcValue)) {
     if (concatArrays) {
       return objValue.concat(srcValue);
-    } else if (!mergeArrays) {
+    }
+    if (!mergeArrays) {
       return srcValue;
     }
   }
@@ -30,9 +28,7 @@ const mergeOrConcatArrays = (concatArrays, mergeArrays) => (objValue, srcValue) 
 };
 
 function merge(a, b, options) {
-  const customizer = options.customizer;
-  const concatArrays = options.concatArrays;
-  const mergeArrays = options.mergeArrays;
+  const { customizer, concatArrays, mergeArrays } = options;
 
   if (Array.isArray(a) && concatArrays) {
     return a.concat(b);
@@ -41,11 +37,11 @@ function merge(a, b, options) {
   return mergeWith(a, b, customizer || mergeOrConcatArrays(concatArrays, mergeArrays));
 }
 
-module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModule, concatArrays) {
-  let options = {
+module.exports = function mergeJson(opts) {
+  const options = {
     // Defaults
     fileName: 'combined.json',
-    edit: json => json,
+    edit: (json) => json,
     startObj: {},
     endObj: null,
     exportModule: false,
@@ -55,37 +51,13 @@ module.exports = function mergeJson(fileName, edit, startObj, endObj, exportModu
     jsonReplacer: null,
     jsonSpace: '\t',
     json5: false,
+    ...opts,
   };
-
-  if (typeof fileName === 'object') {
-    options = Object.assign(options, fileName);
-  } else if (arguments.length) {
-    // DEPRECATED
-    deprecate('Passing multiple arguments is deprecated! Pass an options object instead.');
-
-    options = Object.assign(options, {
-      fileName: fileName || options.fileName,
-      edit: edit || options.edit,
-      startObj: startObj || options.startObj,
-      endObj: endObj || options.endObj,
-      exportModule: exportModule || options.exportModule,
-      concatArrays: concatArrays || options.concatArrays,
-    });
-  }
 
   const jsonLib = (options.json5) ? JSON5 : JSON;
 
   if ((options.startObj && typeof options.startObj !== 'object') || (options.endObj && typeof options.endObj !== 'object')) {
     throw new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
-  }
-
-  if (typeof options.edit === 'object') {
-    // DEPRECATED
-    deprecate('Using an object as an edit function is deprecated! Use a function instead.');
-
-    const obj = options.edit;
-
-    options.edit = json => merge(json, obj, options);
   }
 
   let merged = options.startObj;
