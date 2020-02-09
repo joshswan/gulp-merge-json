@@ -26,8 +26,7 @@
   ],
   "scripts": {
     "lint": "eslint index.js test/*.js",
-    "test": "istanbul test ./node_modules/mocha/bin/_mocha --report html -- test/*.js --reporter spec",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "json5": "^2.1.1",
@@ -38,14 +37,11 @@
   },
   "devDependencies": {
     "@types/gulp-util": "^3.0.31",
-    "coveralls": "*",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.10.0",
-    "gulp": "^3.9.0",
-    "istanbul": "*",
-    "mocha": "^7.0.1",
-    "should": "^13.2.1"
+    "gulp": "^4.0.2",
+    "jest": "^25.1.0"
   },
   "license": "MIT"
 }
