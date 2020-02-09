@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "lint": "eslint index.js test/*.js",
+    "release": "release-it",
     "test": "jest --coverage"
   },
   "dependencies": {
@@ -37,17 +38,45 @@
     "vinyl": "^2.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@release-it/conventional-changelog": "^1.1.0",
     "@types/gulp-util": "^3.0.31",
     "coveralls": "^3.0.9",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.10.0",
     "gulp": "^4.0.2",
+    "husky": "^4.2.1",
     "jest": "^25.1.0",
-    "jest-junit": "^10.0.0"
+    "jest-junit": "^10.0.0",
+    "release-it": "^12.4.3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "jest-junit": {
     "outputDirectory": "./artifacts/jest",
     "outputName": "results.xml"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release %s",
+      "tagName": "v%s"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true,
+      "releaseName": "${version}"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "conventionalcommits"
+      }
+    }
   }
 }
