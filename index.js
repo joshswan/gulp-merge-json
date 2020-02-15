@@ -42,6 +42,7 @@ module.exports = function mergeJson(opts) {
     // Defaults
     fileName: 'combined.json',
     edit: (json) => json,
+    transform: (json) => json,
     startObj: {},
     endObj: null,
     exportModule: false,
@@ -101,7 +102,11 @@ module.exports = function mergeJson(opts) {
       merged = merge(merged, options.endObj, options);
     }
 
-    let contents = jsonLib.stringify(merged, options.jsonReplacer, options.jsonSpace);
+    let contents = jsonLib.stringify(
+      options.transform(merged),
+      options.jsonReplacer,
+      options.jsonSpace,
+    );
 
     if (options.exportModule === true) {
       contents = `module.exports = ${contents};`;

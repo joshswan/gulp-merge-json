@@ -80,6 +80,23 @@ describe('gulp-merge-json', () => {
     });
   });
 
+  test('modified output based on transform function', (done) => {
+    const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
+      transform: (json) => ({
+        name: json.name,
+        place: json.place,
+        tags: [...json.tags, 'sweet'],
+      }),
+    }));
+
+    stream.on('data', (file) => {
+      const expected = ['{', '\t"name": "Josh",', '\t"place": "San Francisco",', '\t"tags": [', '\t\t"awesome",', '\t\t"fun",', '\t\t"sweet"', '\t]', '}'].join('\n');
+
+      expect(file.contents.toString()).toBe(expected);
+      done();
+    });
+  });
+
   test('uses supplied start object as base', (done) => {
     const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
       startObj: { initial: 'value' },

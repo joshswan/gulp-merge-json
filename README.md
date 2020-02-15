@@ -17,6 +17,7 @@ gulp.src('jsonFiles/**/*.json')
 | ---- | ---- | ------- | ----------- |
 | `fileName` | `String` | `combined.json` | Output filename |
 | `edit` | `Function` | `json => json` | Edit function (add/remove/edit keys during merge) |
+| `transform` | `Function` | `json => json` | Transform final merged object (similar to edit but applied at the end) |
 | `startObj` | `Object/Array` | `{}` | Starting object to merge into (useful for providing default values) |
 | `endObj` | `Object/Array` | | Object to merge after file merging complete (useful for overwriting with special values) |
 | `exportModule` | `Boolean/String` | `false` | Output `module.exports = {MERGED_JSON_DATA};` or `{exportModule} = {MERGED_JSON_DATA}` when string passed |
@@ -50,6 +51,23 @@ gulp.src('jsonFiles/**/*.json')
 			}
 
 			return parsedJson;
+		},
+	}))
+	.pipe(gulp.dest('./dist'));
+
+/**
+ * Edit final JSON with transformer function
+ */
+gulp.src('jsonFiles/**/*.json')
+	.pipe(merge({
+		fileName: 'file.json',
+		transform: (mergedJson) => {
+			return {
+				key: {
+					type: 'data',
+					...mergedJson,
+				};
+			};
 		},
 	}))
 	.pipe(gulp.dest('./dist'));

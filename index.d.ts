@@ -13,6 +13,11 @@ declare module 'gulp-merge-json' {
      */
     edit?: (json: obj, file: File) => obj | void;
     /**
+     * Transform function (edit final merged object)
+     * @default json => json
+     */
+    transform?: (json: obj) => obj;
+    /**
      * Starting object to merge into (useful for providing default values)
      * @default {}
      */
