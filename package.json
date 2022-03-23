@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "lint": "eslint index.js test/*.js",
+    "prepare": "husky install",
     "release": "release-it",
     "test": "jest --coverage"
   },
@@ -35,27 +36,22 @@
     "lodash.mergewith": "^4.6.1",
     "plugin-error": "^1.0.1",
     "through": "^2.3.8",
-    "vinyl": "^2.1.0"
+    "vinyl": "^2.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@release-it/conventional-changelog": "^1.1.4",
-    "@types/gulp-util": "^3.0.35",
-    "coveralls": "^3.1.0",
-    "eslint": "^6.1.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@release-it/conventional-changelog": "^4.2.2",
+    "@types/gulp-util": "^3.0.36",
+    "coveralls": "^3.1.1",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
     "gulp": "^4.0.2",
-    "husky": "^4.2.5",
-    "jest": "^26.0.1",
-    "jest-junit": "^10.0.0",
-    "release-it": "^13.6.1"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "jest-junit": "^13.0.0",
+    "release-it": "^14.13.1"
   },
   "jest-junit": {
     "outputDirectory": "./artifacts/jest",
