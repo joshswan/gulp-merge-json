@@ -98,14 +98,17 @@ describe('gulp-merge-json', () => {
   });
 
   test('uses supplied start object as base', (done) => {
-    const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
-      startObj: { initial: 'value' },
-    }));
+    const startObj = { initial: 'value' };
+    const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({ startObj }));
 
     stream.on('data', (file) => {
       const expected = ['{', '\t"initial": "value",', '\t"name": "Josh",', '\t"pet": {', '\t\t"name": "Indy"', '\t},', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
 
       expect(file.contents.toString()).toBe(expected);
+
+      // Ensure startObj is not modified
+      expect(startObj).toStrictEqual({ initial: 'value' });
+
       done();
     });
   });
@@ -319,14 +322,17 @@ describe('gulp-merge-json', () => {
   });
 
   test('merges JSON files containing arrays when passed an array starting object', (done) => {
-    const stream = gulp.src(['test/json/array1.json', 'test/json/array2.json']).pipe(merge({
-      startObj: [],
-    }));
+    const startObj = [];
+    const stream = gulp.src(['test/json/array1.json', 'test/json/array2.json']).pipe(merge({ startObj }));
 
     stream.on('data', (file) => {
       const expected = ['[', '\t{', '\t\t"a": 1,', '\t\t"b": 2,', '\t\t"c": 3,', '\t\t"d": 4', '\t}', ']'].join('\n');
 
       expect(file.contents.toString()).toBe(expected);
+
+      // Ensure startObj is not modified
+      expect(startObj).toStrictEqual([]);
+
       done();
     });
   });

@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "json5": "^2.2.3",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.1",
     "plugin-error": "^2.0.1",
     "through": "^2.3.8",

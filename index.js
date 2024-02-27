@@ -4,6 +4,7 @@
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
 
+const cloneDeep = require('lodash.clonedeep');
 const mergeWith = require('lodash.mergewith');
 const JSON5 = require('json5');
 const path = require('path');
@@ -61,7 +62,7 @@ module.exports = function mergeJson(opts) {
     throw new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
   }
 
-  let merged = options.startObj;
+  let merged = cloneDeep(options.startObj);
   let firstFile = null;
 
   function parseAndMerge(file) {
