@@ -1,5 +1,5 @@
 /*!
- * Copyright 2015-2020 Josh Swan
+ * Copyright 2015-2024 Josh Swan
  * Released under the MIT license
  * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
  */
@@ -254,7 +254,7 @@ describe('gulp-merge-json', () => {
     const stream = gulp.src('test/json/invalid.json').pipe(merge());
 
     stream.on('error', (err) => {
-      expect(err.message).toMatch(/Error while parsing .+test(\\|\/)json(\\|\/)invalid\.json: Unexpected token I/);
+      expect(err.message).toMatch(/Error while parsing .+test(\\|\/)json(\\|\/)invalid\.json: Unexpected token 'I'/);
       done();
     });
 
