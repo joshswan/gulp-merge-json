@@ -51,6 +51,7 @@ module.exports = function mergeJson(opts) {
     mergeArrays: true,
     customizer: null,
     jsonReplacer: null,
+    jsonReviver: null,
     jsonSpace: '\t',
     json5: false,
     ...opts,
@@ -81,7 +82,7 @@ module.exports = function mergeJson(opts) {
     }
 
     try {
-      parsed = jsonLib.parse(file.contents.toString('utf8'));
+      parsed = jsonLib.parse(file.contents.toString('utf8'), options.jsonReviver);
     } catch (err) {
       err.message = `Error while parsing ${file.path}: ${err.message}`;
       return this.emit('error', new PluginError(PLUGIN_NAME, err));

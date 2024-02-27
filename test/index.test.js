@@ -289,6 +289,25 @@ describe('gulp-merge-json', () => {
     stream.end();
   });
 
+  test('uses jsonReviver when parsing if supplied in options', (done) => {
+    const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
+      jsonReviver: (key, value) => {
+        if (key === 'pet') {
+          return undefined;
+        }
+
+        return value;
+      },
+    }));
+
+    stream.on('data', (file) => {
+      const expected = ['{', '\t"name": "Josh",', '\t"tags": [', '\t\t"awesome",', '\t\t"fun"', '\t],', '\t"place": "San Francisco",', '\t"settings": {', '\t\t"likesSleep": true', '\t}', '}'].join('\n');
+
+      expect(file.contents.toString()).toBe(expected);
+      done();
+    });
+  });
+
   test('uses jsonReplacer when stringifying if supplied in options', (done) => {
     const stream = gulp.src(['test/json/test1.json', 'test/json/test2.json']).pipe(merge({
       jsonReplacer: (key, value) => {

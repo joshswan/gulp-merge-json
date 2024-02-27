@@ -41,6 +41,8 @@ declare module 'gulp-merge-json' {
     mergeArrays?: boolean;
     /** Custom merge function for use with mergeWith */
     customizer?: (objValue: obj, srcValue: obj, key?: string, object?: obj, source?: obj, stack?: any) => any;
+    /** Custom JSON reviver function passed to parse */
+    jsonReviver?: (key: string, value: any) => any;
     /** Custom JSON replacer function passed to stringify */
     jsonReplacer?: (key: string, value: any) => any;
     /**
