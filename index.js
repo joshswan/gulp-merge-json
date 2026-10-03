@@ -1,7 +1,7 @@
 /*!
- * Copyright 2015-2024 Josh Swan
+ * Copyright 2015-2026 Josh Swan
  * Released under the MIT license
- * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
+ * https://github.com/joshswan/gulp-merge-json/blob/main/LICENSE
  */
 
 const cloneDeep = require('lodash.clonedeep');
@@ -12,10 +12,8 @@ const PluginError = require('plugin-error');
 const through = require('through');
 const Vinyl = require('vinyl');
 
-// Polyfill structuredClone with lodash to support node versions < 17.
-if (typeof global.structuredClone !== 'function') {
-  global.structuredClone = cloneDeep;
-}
+// Fall back to lodash on node versions < 17, which lack structuredClone.
+const clone = typeof structuredClone === 'function' ? structuredClone : cloneDeep;
 
 const PLUGIN_NAME = 'gulp-merge-json';
 
@@ -62,13 +60,16 @@ module.exports = function mergeJson(opts) {
     ...opts,
   };
 
-  const jsonLib = (options.json5) ? JSON5 : JSON;
+  const jsonLib = options.json5 ? JSON5 : JSON;
 
-  if ((options.startObj && typeof options.startObj !== 'object') || (options.endObj && typeof options.endObj !== 'object')) {
+  if (
+    (options.startObj && typeof options.startObj !== 'object') ||
+    (options.endObj && typeof options.endObj !== 'object')
+  ) {
     throw new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
   }
 
-  let merged = structuredClone(options.startObj);
+  let merged = clone(options.startObj);
   let firstFile = null;
 
   function parseAndMerge(file) {
@@ -79,7 +80,10 @@ module.exports = function mergeJson(opts) {
     }
 
     if (file.isStream()) {
-      return this.emit('error', new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`));
+      return this.emit(
+        'error',
+        new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`),
+      );
     }
 
     if (!firstFile) {

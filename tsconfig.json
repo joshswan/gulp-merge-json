@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "noEmit": true,
+    "strict": true,
+    "types": ["node"]
+  },
+  "files": ["index.d.ts", "test/types.ts"]
+}
