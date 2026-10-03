@@ -1,7 +1,7 @@
 /*!
- * Copyright 2015-2024 Josh Swan
+ * Copyright 2015-2026 Josh Swan
  * Released under the MIT license
- * https://github.com/joshswan/gulp-merge/blob/master/LICENSE
+ * https://github.com/joshswan/gulp-merge-json/blob/main/LICENSE
  */
 
 const cloneDeep = require('lodash.clonedeep');
@@ -62,9 +62,12 @@ module.exports = function mergeJson(opts) {
     ...opts,
   };
 
-  const jsonLib = (options.json5) ? JSON5 : JSON;
+  const jsonLib = options.json5 ? JSON5 : JSON;
 
-  if ((options.startObj && typeof options.startObj !== 'object') || (options.endObj && typeof options.endObj !== 'object')) {
+  if (
+    (options.startObj && typeof options.startObj !== 'object') ||
+    (options.endObj && typeof options.endObj !== 'object')
+  ) {
     throw new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
   }
 
@@ -79,7 +82,10 @@ module.exports = function mergeJson(opts) {
     }
 
     if (file.isStream()) {
-      return this.emit('error', new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`));
+      return this.emit(
+        'error',
+        new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Streaming not supported!`),
+      );
     }
 
     if (!firstFile) {

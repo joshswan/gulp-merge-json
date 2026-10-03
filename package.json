@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshswan/gulp-merge-json"
+    "url": "git+https://github.com/joshswan/gulp-merge-json.git"
   },
   "bugs": {
     "url": "https://github.com/joshswan/gulp-merge-json/issues"
@@ -26,9 +26,8 @@
     "README.md"
   ],
   "scripts": {
-    "lint": "eslint index.js test/*.js",
-    "prepare": "husky install",
-    "release": "release-it",
+    "lint": "eslint .",
+    "prepare": "husky",
     "test": "jest --coverage"
   },
   "dependencies": {
@@ -40,40 +39,20 @@
     "vinyl": "^3.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.0.1",
-    "@commitlint/config-conventional": "^19.0.0",
-    "@release-it/conventional-changelog": "^8.0.1",
-    "@types/gulp-util": "^3.0.41",
-    "coveralls": "^3.1.1",
-    "eslint": "^8.57.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.1",
-    "gulp": "^4.0.2",
-    "husky": "^9.0.11",
-    "jest": "^29.7.0",
-    "jest-junit": "^16.0.0",
-    "release-it": "^17.1.1"
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.4",
+    "@types/vinyl": "^2.0.12",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.13.0",
+    "gulp": "^5.0.1",
+    "husky": "^9.1.7",
+    "jest": "^30.5.2",
+    "prettier": "^3.9.9",
+    "typescript": "^7.0.2"
   },
-  "jest-junit": {
-    "outputDirectory": "./artifacts/jest",
-    "outputName": "results.xml"
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true,
-      "releaseName": "${version}"
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "conventionalcommits"
-      }
-    }
-  }
+  "packageManager": "pnpm@12.6.0"
 }
