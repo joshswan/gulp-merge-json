@@ -46,10 +46,10 @@ declare module 'gulp-merge-json' {
     /** Custom JSON replacer function passed to stringify */
     jsonReplacer?: (key: string, value: any) => any;
     /**
-     * String used for white space by stringify
+     * String or number of spaces used for white space by stringify
      * @default '\t'
      */
-    jsonSpace?: string;
+    jsonSpace?: string | number;
     /**
      * Use JSON5 instead of JSON for parse and stringify
      * @default false
@@ -59,7 +59,7 @@ declare module 'gulp-merge-json' {
 
   type obj = {[key: string]: any};
 
-  const gulp_merge_json: (options: IGulpMergeJsonOptions) => NodeJS.ReadStream;
+  const gulp_merge_json: (options?: IGulpMergeJsonOptions) => NodeJS.ReadWriteStream;
 
   export = gulp_merge_json;
 }
