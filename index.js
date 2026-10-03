@@ -12,10 +12,8 @@ const PluginError = require('plugin-error');
 const through = require('through');
 const Vinyl = require('vinyl');
 
-// Polyfill structuredClone with lodash to support node versions < 17.
-if (typeof global.structuredClone !== 'function') {
-  global.structuredClone = cloneDeep;
-}
+// Fall back to lodash on node versions < 17, which lack structuredClone.
+const clone = typeof structuredClone === 'function' ? structuredClone : cloneDeep;
 
 const PLUGIN_NAME = 'gulp-merge-json';
 
@@ -71,7 +69,7 @@ module.exports = function mergeJson(opts) {
     throw new PluginError(PLUGIN_NAME, `${PLUGIN_NAME}: Invalid start and/or end object!`);
   }
 
-  let merged = structuredClone(options.startObj);
+  let merged = clone(options.startObj);
   let firstFile = null;
 
   function parseAndMerge(file) {
